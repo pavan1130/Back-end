@@ -11,13 +11,25 @@ app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect(
-  "mongodb+srv://vishwanathnaik29:eVYTLqOrS8PcQ8GS@cluster0.a4ssc6m.mongodb.net/users",
+  "mongodb+srv://admin:11301130@cluster0.ibfabjp.mongodb.net/CutOver?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   }
 );
+const db = mongoose.connection;
 
+db.on("error", (error) => {
+  console.error("MongoDB connection error:", error);
+});
+
+db.once("open", () => {
+  console.log("Connected to MongoDB");
+});
+
+db.once("close", () => {
+  console.log("Disconnected from MongoDB");
+});
 app.use("/api/users", require("./routes/authRoutes"));
 app.use("/api/users", require("./routes/taskRoutes"));
 app.use("/api", require("./routes/emailRoutes"));
