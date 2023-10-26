@@ -9,29 +9,20 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    process.exit(1);
+  }
+};
 
-// MongoDB Connection
-const mongodbURI = process.env.MONGODB_URI; // Ensure this environment variable is correctly set
-
-if (!mongodbURI) {
-  console.error("MONGODB_URI environment variable is not set.");
-  process.exit(1);
-}
-
-mongoose.connect(mongodbURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-const db = mongoose.connection;
-
-db.on("error", (error) => {
-  console.error("MongoDB connection error:", error);
-});
-
-db.once("open", () => {
-  console.log("Connected to MongoDB");
-});
+connectDB(); // Call the function to establish the database connection
 
 // Routes
 app.use("/api/users", require("./routes/authRoutes"));
