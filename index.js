@@ -4,8 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 require("dotenv").config();
 const app = express();
-
-// Middleware
+const port = process.env.PORT || 5000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -22,15 +21,12 @@ const connectDB = async () => {
   }
 };
 
-connectDB(); // Call the function to establish the database connection
+connectDB();
 
-// Routes
 app.use("/api/users", require("./routes/authRoutes"));
-app.use("/api/tasks", require("./routes/taskRoutes")); // Updated route path for tasks
+app.use("/api/tasks", require("./routes/taskRoutes"));
 app.use("/api", require("./routes/emailRoutes"));
 
-// Server Configuration and Startup
-const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

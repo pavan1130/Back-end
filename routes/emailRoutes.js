@@ -64,7 +64,6 @@ router.post("/send-email", async (req, res) => {
       `,
     };
 
-    // Send the email
     await transporter.sendMail(mailOptions);
 
     res.json({ message: `Email sent successfully for Task ID ${taskId}!` });

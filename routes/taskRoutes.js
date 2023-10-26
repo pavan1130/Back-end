@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const Task = require("../models/Task");
-
-// Create a new task for a user
 router.post("/:userId/tasks", async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -38,7 +36,6 @@ router.delete("/:userId/tasks/:taskId", async (req, res) => {
   }
 });
 
-// Get a single task by ID
 router.get("/:userId/tasks/:taskId", async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -66,7 +63,7 @@ router.put("/:userId/tasks/:taskId", async (req, res) => {
   try {
     const userId = req.params.userId;
     const taskId = req.params.taskId;
-    const { completionStatus } = req.body; // Only the completionStatus is needed
+    const { completionStatus } = req.body;
 
     const updatedUser = await User.findOneAndUpdate(
       { _id: userId, "tasks._id": taskId },
